@@ -13,6 +13,9 @@
   <body>
     <div id="app">
       <h1>{{ message }}</h1>
+      <ul>
+        <li v-for="count in count"> Item # {{count}}</li>
+      </ul>
     </div>
   </body>
 
@@ -23,9 +26,12 @@
       el: '#app',
       data: {
         message: 'Hello Vue World',
-        intro: "Welcome to the Tutorial <small>It is all about Vue.js</small>",
-        viewed: false,
-        viewed2: true
+        todos: [
+          { text: 'Learn Vue', id: 1 },
+          { text: 'Like the video', id: 2 },
+          { text: 'Subscribe to BLTs nuts', id: 3 }
+        ],
+        count: 10
       }
     })
   </script>

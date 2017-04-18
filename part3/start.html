@@ -12,7 +12,7 @@
 
   <body>
     <div id="app">
-      <h1>{{message}}</h1>
+      <h1 v-show="viewed">You have viewed this page</h1>
     </div>
   </body>
 
@@ -22,7 +22,9 @@
     var app = new Vue({
       el: '#app',
       data: {
-        message: 'Hello Vue World'
+        message: 'Hello Vue World',
+        intro: "Welcome to the Jungle!! <small>It is all about Vue.js</small>",
+        viewed: true
       }
     })
   </script>
