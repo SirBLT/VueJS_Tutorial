@@ -21,12 +21,12 @@
               <hr />
               <div class="row">
                 <div class="col-md-6">
-                  <input type="text" class="form-control" placeholder="Starting Zip">
-                  <span class="city-span"></span>
+                  <input type="text" class="form-control" placeholder="Starting Zip" v-model="startingZip">
+                  <span class="city-span">{{ startingCity }}</span>
                 </div>
                 <div class="col-md-6">
-                  <input type="text" class="form-control" placeholder="Ending Zip">
-                  <span class="city-span"></span>
+                  <input type="text" class="form-control" placeholder="Ending Zip" v-model="endingZip">
+                  <span class="city-span">{{ endingCity }}</span>
                 </div>
               </div>
               <div class="row">
@@ -47,7 +47,51 @@
 
   <script>
     var app = new Vue({
-      el: '#app'
+      el: '#app',
+      data: {
+        startingZip: '',
+        startingCity: '',
+        endingZip: '',
+        endingCity: ''
+      },
+      watch: {
+        startingZip: function() {
+          this.startingCity = ''
+          if (this.startingZip.length === 5) {
+            this.lookupStartingZip()
+          }
+        },
+        endingZip: function() {
+          this.endingCity = ''
+          if (this.endingZip.length === 5) {
+            this.lookupEndingZip()
+          }
+        }
+      },
+      methods: {
+        lookupStartingZip: _.debounce(function() {
+          var app = this
+          app.startingCity = 'Searching...'
+          axios.get('http://ziptasticapi.com/' + app.startingZip)
+            .then(function (response) {
+              app.startingCity = response.data.city + ', ' + response.data.state
+            })
+            .catch(function (error) {
+              app.startingCity = 'Invalid Zipcode'
+            })
+        }, 500),
+        lookupEndingZip: _.debounce(function() {
+          var app = this
+          app.endingCity = 'Searching...'
+          axios.get('http://ziptasticapi.com/' + app.endingZip)
+            .then(function (response) {
+              app.endingCity = response.data.city + ', ' + response.data.state
+            })
+            .catch(function (error) {
+              app.endingCity = 'Invalid Zipcode'
+            })
+        }, 500)
+      }
     })
   </script>
 </html>
